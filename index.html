@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuvella Store</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;color:#222;background:#fff}
+header{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid #eee}
+.nav{max-width:1150px;margin:auto;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.logo{font-size:28px;font-weight:800;letter-spacing:1px}.links{display:flex;gap:22px;align-items:center}.links a{color:#222;text-decoration:none;font-weight:600;cursor:pointer}
+.cart{border:1px solid #222;border-radius:22px;padding:9px 14px;background:#222;color:#fff;cursor:pointer}
+.hero{background:linear-gradient(120deg,#f8eee8,#f7f7f7);padding:70px 22px;text-align:center}
+.hero h1{font-size:52px;margin:0 0 12px}.hero p{font-size:19px;margin:0 0 25px;color:#555}.btn{display:inline-block;background:#222;color:#fff;padding:13px 24px;border-radius:25px;text-decoration:none;cursor:pointer;border:0}
+.section{max-width:1150px;margin:auto;padding:45px 22px}.section h2{text-align:center;font-size:32px;margin:0 0 28px}
+.categories{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.cat{padding:38px 20px;border-radius:18px;text-align:center;background:#f5f5f5;cursor:pointer;font-size:23px;font-weight:700}
+.products{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.card{border:1px solid #eee;border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 3px 12px #0000000d}
+.pic{height:210px;background:linear-gradient(135deg,#eee,#fafafa);display:flex;align-items:center;justify-content:center;font-size:58px}
+.card .info{padding:15px}.card h3{margin:0 0 7px}.price{font-weight:700;margin-bottom:12px}.add{width:100%;padding:10px;border:0;border-radius:20px;background:#222;color:#fff;cursor:pointer}
+footer{margin-top:30px;background:#222;color:#fff;text-align:center;padding:30px 20px}
+#toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:12px 20px;border-radius:25px;display:none}
+@media(max-width:800px){.links{display:none}.hero h1{font-size:38px}.categories{grid-template-columns:1fr}.products{grid-template-columns:repeat(2,1fr)}.pic{height:160px}}
+@media(max-width:450px){.products{grid-template-columns:1fr}.nav{padding:14px 16px}.section{padding:35px 16px}}
+</style>
+</head>
+<body>
+<header><nav class="nav">
+<div class="logo">NUVELLA</div>
+<div class="links"><a onclick="show('all')">Home</a><a onclick="show('women')">Women</a><a onclick="show('men')">Men</a><a onclick="show('kids')">Kids</a></div>
+<button class="cart" onclick="cart()">Cart (<span id="count">0</span>)</button>
+</nav></header>
+
+<section class="hero"><h1>Discover Your Style</h1><p>Nuvella — Ladies, Men & Kids Online Store</p><a class="btn" onclick="document.getElementById('shop').scrollIntoView()">Shop Now</a></section>
+
+<section class="section">
+<h2>Shop By Category</h2>
+<div class="categories">
+<div class="cat" onclick="show('women')">👗<br>Women</div>
+<div class="cat" onclick="show('men')">👔<br>Men</div>
+<div class="cat" onclick="show('kids')">🧸<br>Kids</div>
+</div>
+</section>
+
+<section class="section" id="shop">
+<h2>Featured Collection</h2>
+<div class="products" id="products"></div>
+</section>
+
+<footer><strong>NUVELLA</strong><p>Ladies • Men • Kids</p><small>© 2026 Nuvella Store. All rights reserved.</small></footer>
+<div id="toast"></div>
+<script>
+const data=[
+['women','Floral Summer Dress','₹1,499','👗'],['women','Classic Handbag','₹999','👜'],
+['women','Elegant Top','₹799','👚'],['women','Everyday Sneakers','₹1,299','👟'],
+['men','Classic Casual Shirt','₹999','👔'],['men','Denim Jacket','₹1,799','🧥'],
+['men','Casual T-Shirt','₹599','👕'],['men','Classic Sneakers','₹1,399','👟'],
+['kids','Kids Party Dress','₹899','🎀'],['kids','Kids Hoodie','₹699','🧸'],
+['kids','Kids T-Shirt','₹449','👕'],['kids','Kids Sneakers','₹799','👟']
+];
+let current='all',count=0;
+function show(cat){current=cat;render();document.getElementById('shop').scrollIntoView({behavior:'smooth'})}
+function render(){
+let list=current==='all'?data:data.filter(x=>x[0]===current);
+document.getElementById('products').innerHTML=list.map(x=>`<div class="card"><div class="pic">${x[3]}</div><div class="info"><h3>${x[1]}</h3><div class="price">${x[2]}</div><button class="add" onclick="add()">Add to Cart</button></div></div>`).join('');
+}
+function add(){count++;document.getElementById('count').textContent=count;let t=document.getElementById('toast');t.textContent='Added to cart ✓';t.style.display='block';setTimeout(()=>t.style.display='none',1200)}
+function cart(){alert(count?`You have ${count} item(s) in your cart.`:'Your cart is empty.')}
+render();
+</script>
+</body>
+</html>
